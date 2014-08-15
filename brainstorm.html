@@ -109,7 +109,7 @@
 			tooltip   : 'Click to edit...'
 		});
 		
-		$('.edit_area').editable('file:///home/futurenode/workspace/final-brainstorm/brainstorm.html/save.php', { 
+		$('.edit_area').editable('http://irinapreda.github.io/brainstorm/save.php', { 
 			type      : 'textarea',
 			cancel    : 'Cancel',
 			submit    : 'OK',
@@ -398,72 +398,10 @@ window.SectorView = Backbone.View.extend({
 	},
 });
 
-function sendMail() {
-    var link = "mailto:irinapreda@gmail.com"
-             + "?subject=" + escape("Feedback")
-    ;
-
-    window.location.href = link;
-}
-
-window.onload = function(){
-                var canvas = document.getElementById("canvas-container");
-
-                var translatePos = {
-                    x: canvas.width / 2,
-                    y: canvas.height / 2
-                };
-
-                var scale = 1.0;
-                var scaleMultiplier = 0.8;
-                var startDragOffset = {};
-                var mouseDown = false;
-
-                // add button event listeners
-                document.getElementById("plus").addEventListener("click", function(){
-                    scale /= scaleMultiplier;
-                    draw(scale, translatePos);
-                }, false);
-
-                document.getElementById("minus").addEventListener("click", function(){
-                    scale *= scaleMultiplier;
-                    draw(scale, translatePos);
-                }, false);
-
-                // add event listeners to handle screen drag
-                canvas.addEventListener("mousedown", function(evt){
-                    mouseDown = true;
-                    startDragOffset.x = evt.clientX - translatePos.x;
-                    startDragOffset.y = evt.clientY - translatePos.y;
-                });
-
-                canvas.addEventListener("mouseup", function(evt){
-                    mouseDown = false;
-                });
-
-                canvas.addEventListener("mouseover", function(evt){
-                    mouseDown = false;
-                });
-
-                canvas.addEventListener("mouseout", function(evt){
-                    mouseDown = false;
-                });
-
-                canvas.addEventListener("mousemove", function(evt){
-                    if (mouseDown) {
-                        translatePos.x = evt.clientX - startDragOffset.x;
-                        translatePos.y = evt.clientY - startDragOffset.y;
-                        draw(scale, translatePos);
-                    }
-                });
-
-                draw(scale, translatePos);
-            };
-
 </script>
 
 </head>
-<body onmousedown="return false;">
+<body>
 
 <div style="padding:15px; position: absolute; min-width: 1300px">
 	<div id="column1-wrap"><div id="column1"><b><h3><span class="edit_area" id="title" style="display: inline">New Brainstorm</span></h3></b><br/>
@@ -473,7 +411,7 @@ window.onload = function(){
 					</div>
 				</div>
 	</div>
-	<div id="column2">
+	<div id="column2" style="position: fixed; top: 1em; right: 1em;">
 		<div class="dropdown">
 			<div class="btn-group">			
 				<button type="button" id="btnSave" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-star"></span><b>Download</b></button>

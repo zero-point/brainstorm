@@ -41,6 +41,19 @@
 </style>
 
 <style type="text/css">
+.editable {
+text-color: black;
+	background: white;
+    margin-top: 5px;
+    margin-left: 5px;
+    height: 200px;
+    width: 350px;
+    cursor: text;
+    border: 1px solid #3399cc; 
+    box-shadow: inset 0px 1px 3px #3399cc;
+    padding: 10px;
+}
+
 .modal {
 	margin-left: 0;
 	margin-top: 0px;
@@ -74,7 +87,7 @@
 		<a class="close" data-dismiss="modal">&times;</a>
 		<% if (label) { %>
 			<div class="sector-label"><h3 style="display:inline"><%= label %></h3> <i class="icon-pencil"></i></div>
-			<p class="sector-label-edit"><input type="text" class="input-xlarge" value="<%= label %>" /></p>
+			<p class="sector-label-edit"><input type="text" class="input-xlarge" ></p>
 		<% } %>
 	</div>
 	<form class="form-vertical">
@@ -98,6 +111,7 @@
 
 <script src="scripts/jquery.jeditable.js" type="text/javascript" charset="utf-8"></script>
 <script>
+
 	$(document).ready(function() {
 
 //		$('#title').editable(function() {
@@ -291,6 +305,8 @@ window.FormPopup = Backbone.View.extend({
 		this.$el.on("hidden", function() {
 			view.remove();
 		});
+		
+		this.$el.find(".sector-label h3").html(document.getElementById('title').innerHTML);
 
 		this.$el.find("form").submit(function() {
 			$(this).find("input:text").each(function() {
@@ -330,33 +346,35 @@ window.SectorView = Backbone.View.extend({
 	events: {
 		"mouseover": "popOut",
 		"mouseout": "popIn",
-		"click": "showInfo"
+		"click": "showInfo",
     },
 	
 	render: function() {
 		var radius = this.model.get("radius");
-		
+		var circle;
 		if (this.model.get("level") == 0) {
 			if (this.el != null) return;
-			this.setElement(new Circle(radius, {
+			circle = new Circle(radius, {
 				x: CANVAS.width/2,
 				y: CANVAS.height/2,
 				fill: getRandomColor(),
-			}));
+			});
+			this.setElement(circle);
 			CANVAS.append(this.el);
 		} else {
 			var offsetAngle = this.model.get("offsetAngle");
 			var angle = this.model.get("angle");
 
 			if (this.el == null) {
-				this.setElement(new Circle(radius, {
+				circle = new Circle(radius, {
 					x: CANVAS.width/2,
 					y: CANVAS.height/2,
 					startAngle: offsetAngle + angle,
 					endAngle: offsetAngle + angle,
 					zIndex: -this.model.get("level"),
 					includeCenter:true,
-				}));
+				});
+				this.setElement(circle);
 				CANVAS.append(this.el);
 			}
 
@@ -396,18 +414,32 @@ window.SectorView = Backbone.View.extend({
 	showInfo: function() {
 		new FormPopup({ model: this.model }).render();
 	},
+	
 });
+$(function(){
 
+      $(".editable").keypress(function(e) {
+        if (e.which == 13) {
+            e.preventDefault();
+
+             if (document.selection) {
+                document.selection.createRange().pasteHTML("");
+             } else {
+                $(this).append("");
+             }
+        }
+    });
+});
 </script>
 
 </head>
 <body>
 
 <div style="padding:15px; position: absolute; min-width: 1300px">
-	<div id="column1-wrap"><div id="column1"><b><h3><span class="edit_area" id="title" style="display: inline">New Brainstorm</span></h3></b><br/>
-					<div class="btn-group">
+	<div id="column1-wrap"><div id="column1" ><b><h3><div id="title" class="editable" style="display: inline" onClick="this.contentEditable='true';">New Brainstorm</div></h3></b><br/>
+					<div class="btn-group" style="left:3%">
 						<button type="button" id="plus" class="btn btn-default btn-lg"><b>+</b></button>
-						<button type="button" id="minus" class="btn btn-default btn-lg"><b>-</b></button>
+						<button type="button" id="minus" class="btn btn-default btn-lg"><b><b>-</b></b></button>
 					</div>
 				</div>
 	</div>
@@ -445,7 +477,16 @@ window.SectorView = Backbone.View.extend({
   			}
 		});    
 	});
-
+	
+	var plusButton = document.getElementById('plus');
+	plusButton.addEventListener("click", function() {
+	CANVAS.scale += 0.1;
+	});
+	
+	var minusButton = document.getElementById('minus');
+	minusButton.addEventListener("click", function() {
+	CANVAS.scale -= 0.1;
+	});
 </script>
 </body>
 </html>

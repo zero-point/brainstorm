@@ -3473,6 +3473,7 @@ CanvasNode = Klass(Animatable, Transformable, {
   },
 
   makeDraggable : function() {
+    Circle.cursor='move'
     this.addEventListener('dragstart', function(ev) {
       this.dragStartPosition = {x: this.x, y: this.y};
       ev.stopPropagation();
@@ -3480,8 +3481,8 @@ CanvasNode = Klass(Animatable, Transformable, {
       return false;
     }, false);
     this.addEventListener('drag', function(ev) {
-      this.x = this.dragStartPosition.x + this.root.dragX / this.parent.currentMatrix[0];
-      this.y = this.dragStartPosition.y + this.root.dragY / this.parent.currentMatrix[3];
+      this.x = this.dragStartPosition.x + this.root.dragX / this.currentMatrix[0];
+      this.y = this.dragStartPosition.y + this.root.dragY / this.currentMatrix[3];
       ev.stopPropagation();
       ev.preventDefault();
       return false;
@@ -4864,6 +4865,7 @@ Circle = Klass(Drawable, {
   clockwise : false,
   closePath : true,
   includeCenter : false,
+  cursor: 'pointer',
 
   initialize : function(radius, config) {
     if (radius != null) this.radius = radius

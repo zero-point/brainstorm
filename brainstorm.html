@@ -372,7 +372,7 @@ window.Sector = Backbone.Model.extend({
 });
 
 var root = new Sector({
-	label: "Project Brief..."
+	label: document.getElementById("braintitle").innerHTML
 
 });
 
@@ -812,7 +812,7 @@ function newBrain(){
 	<img src="images/Create-a-brainstorm-diaologue-box.png" >
 	<div style="position:fixed;top:23.3%;right:49%;">
 		<p class="customfont2">Create a brainstorm</p><br/>
-		<input style="position:fixed;top:31%;right:42%;" type="text" placeholder="E.g. Project Brief or Uni assignment"></p>
+		<input style="position:fixed;top:31%;right:42%;" type="text" id="braintitle" placeholder="E.g. Project Brief or Uni assignment"></p>
 		<p class="customfont1">Name</p><br/><br/>
 		<p class="customfont1">Quick Tip</p>
 		<div id="randomDiv" class="customfont3" style="position:fixed">Start general...<br/> Start with your broadest ideas before getting to the specifics,<br/>it will make your brainstorm more effective.</div>		
